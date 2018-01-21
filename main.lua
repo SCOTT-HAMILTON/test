@@ -38,8 +38,6 @@ draw_list = {}
 
 map_start = {x = 0, y = 0}
 
-
-
 backgroundColor = gradient {   -- degradé de couleur pour l'arrière plan
     direction = 'horizontal';
 	{203, 219, 215};
@@ -70,7 +68,7 @@ end
 ------------------------------------------------------
 
 function love.update(dt)
-	
+
 	if currentScene == "MAINGAME" then
  
     lunar:update(dt)
@@ -122,36 +120,36 @@ function love.draw()
   elseif currentScene == "MAINGAME" then
 	  drawinrect(backgroundColor, 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
   
-  love.graphics.push()
-  
-  love.graphics.translate(-camera.pos.x, -camera.pos.y)
-  
-  for i = 1, #draw_list do
-    if (draw_list[i].name == nil) then
-      love.graphics.draw(draw_list[i].image, draw_list[i].pos.x-draw_list[i].image:getWidth(), draw_list[i].pos.y-draw_list[i].image:getHeight()-Tile.tile_height*2, 0 , Tile.scale.x, Tile.scale.y)
-    elseif (draw_list[i].name == "perso")then
+      love.graphics.push()
       
-      if (perso.scale_sign == 1) then 
+      love.graphics.translate(-camera.pos.x, -camera.pos.y)
       
-      love.graphics.draw(draw_list[i].image, draw_list[i].pos.x, draw_list[i].pos.y, 0, Tile.scale.x, Tile.scale.y)
-      else 
-        love.graphics.draw(draw_list[i].image, draw_list[i].pos.x, draw_list[i].pos.y, 0, -Tile.scale.x, Tile.scale.y, draw_list[i].image:getWidth())
+      for i = 1, #draw_list do
+        if (draw_list[i].name == nil) then
+          love.graphics.draw(draw_list[i].image, draw_list[i].pos.x-draw_list[i].image:getWidth(), draw_list[i].pos.y-draw_list[i].image:getHeight()-Tile.tile_height*2, 0 , Tile.scale.x, Tile.scale.y)
+        elseif (draw_list[i].name == "perso")then
+          local offset = {x = 0, y = 0}
+          
+          if (perso.scale_sign == 1) then 
+          
+          love.graphics.draw(draw_list[i].image, draw_list[i].pos.x+offset.x, draw_list[i].pos.y+offset.y, 0, Tile.scale.x, Tile.scale.y)
+          else 
+            love.graphics.draw(draw_list[i].image, draw_list[i].pos.x+offset.x, draw_list[i].pos.y+offset.y, 0, -Tile.scale.x, Tile.scale.y, draw_list[i].image:getWidth())
+          end
+        else
+          love.graphics.draw(draw_list[i].image, draw_list[i].pos.x+draw_list[i].offset.x, draw_list[i].pos.y+draw_list[i].offset.y+draw_list[i].vec_high, 0, Tile.scale.x, Tile.scale.y)
+        end
       end
-    else
-      love.graphics.draw(draw_list[i].image, draw_list[i].pos.x+draw_list[i].offset.x, draw_list[i].pos.y+draw_list[i].offset.y+draw_list[i].vec_high, 0, Tile.scale.x, Tile.scale.y)
+      love.graphics.pop()
+      
+      if (lunar_mode) then
+        love.graphics.draw(lunar_ship.image, lunar_ship.pos.x, lunar_ship.pos.y, math.rad(lunar_ship.r), Tile.scale.x, Tile.scale.y, lunar_ship.image:getWidth(), lunar_ship.image:getHeight()/2)
+        if (lunar_ship.fire_on) then
+          love.graphics.draw(lunar_ship.fire, lunar_ship.pos.x, lunar_ship.pos.y, math.rad(lunar_ship.r), Tile.scale.x, Tile.scale.y, lunar_ship.fire:getWidth()-5, lunar_ship.fire:getHeight()/2)
+        end
+      end
     end
-  end
-  love.graphics.pop()
-  
-  if (lunar_mode) then
-    love.graphics.draw(lunar_ship.image, lunar_ship.pos.x, lunar_ship.pos.y, math.rad(lunar_ship.r), Tile.scale.x, Tile.scale.y, lunar_ship.image:getWidth(), lunar_ship.image:getHeight()/2)
-    if (lunar_ship.fire_on) then
-      love.graphics.draw(lunar_ship.fire, lunar_ship.pos.x, lunar_ship.pos.y, math.rad(lunar_ship.r), Tile.scale.x, Tile.scale.y, lunar_ship.fire:getWidth()-5, lunar_ship.fire:getHeight()/2)
-    end
-  end
-end
 
-  
   
 end
 
@@ -164,107 +162,109 @@ function love.keypressed(key)
 	if currentScene  == "TITLESCREEN" then	
 		tScreen:controller(key)
 	elseif currentScene == "MAINMENU" then
-		mainMenu:controller(key)
+    mainMenu:controller(key)
+  elseif currentScene == "LEVELSELECT" then
+    levelSelect:controller(key)
 	elseif currentScene == "MAINGAME" then  -- IN GAME CONTROLL
-    
-  if (perso.falled) then
-    print("falled")
-    return false
-  end
-  print("not falled")
-  
-  local box_moving = false
-  for i = 1, #objects do
-    if ((objects[i].id == 6 or objects[i].id == 7) and objects[i].moving and not objects[i].falled) then
-      box_moving = true
-    end
-  end 
-  
-  if (not perso.moving and not box_moving)then
-    local under_button = false
-    local prec_pos = {line = perso.line, column = perso.column}
-    if map.map_objects[perso.line][perso.column] == 8 or map.map_objects[perso.line][perso.column] == 10 then
-      under_button = true
-    end
-    
-    if key == "up" then
-      local wanted_nextpos = {line = perso.line+1, column = perso.column}
-      move_perso(wanted_nextpos, perso.up)
-    elseif key == "down" then
-      local wanted_nextpos = {line = perso.line-1, column = perso.column}
-      print("wanted_next c : ")
-      move_perso(wanted_nextpos, perso.down)
-    elseif key == "right" then
-      local wanted_nextpos = {line = perso.line, column = perso.column-1}
-      move_perso(wanted_nextpos, perso.right)
-    elseif key == "left" then
-      local wanted_nextpos = {line = perso.line, column = perso.column+1}
-      move_perso(wanted_nextpos, perso.left)
-    end
-    
+
     if (perso.falled) then
       print("falled")
       return false
     end
+    print("not falled")
     
-    if (lunar_mode)then return false end
+    local box_moving = false
+    for i = 1, #objects do
+      if ((objects[i].id == 6 or objects[i].id == 7) and objects[i].moving and not objects[i].falled) then
+        box_moving = true
+      end
+    end 
     
-    if prec_pos.line ~= perso.line or prec_pos.column ~= perso.column then
-      if under_button then
+    if (not perso.moving and not box_moving)then
+      local under_button = false
+      local prec_pos = {line = perso.line, column = perso.column}
+      if map.map_objects[perso.line][perso.column] == 8 or map.map_objects[perso.line][perso.column] == 10 then
+        under_button = true
+      end
+      
+      if key == "up" then
+        local wanted_nextpos = {line = perso.line+1, column = perso.column}
+        move_perso(wanted_nextpos, perso.up)
+      elseif key == "down" then
+        local wanted_nextpos = {line = perso.line-1, column = perso.column}
+        print("wanted_next c : ")
+        move_perso(wanted_nextpos, perso.down)
+      elseif key == "right" then
+        local wanted_nextpos = {line = perso.line, column = perso.column-1}
+        move_perso(wanted_nextpos, perso.right)
+      elseif key == "left" then
+        local wanted_nextpos = {line = perso.line, column = perso.column+1}
+        move_perso(wanted_nextpos, perso.left)
+      end
+      
+      if (perso.falled) then
+        print("falled")
+        return false
+      end
+      
+      if (lunar_mode)then return false end
+      
+      if prec_pos.line ~= perso.line or prec_pos.column ~= perso.column then
+        if under_button then
+          for i = 1, #objects do
+            if objects[i].line == prec_pos.line and objects[i].column == prec_pos.column then
+              objects[i].id = objects[i].id+1
+              Level.current_level.nb_buttons_succed = Level.current_level.nb_buttons_succed-1
+              map.map_objects[prec_pos.line][prec_pos.column] = objects[i].id
+              objects[i].image = tile_set[objects[i].id].image
+              break
+            end
+          end
+        end
+      end
+      if map.map_objects[perso.line][perso.column] == 9 or map.map_objects[perso.line][perso.column] == 11 then
         for i = 1, #objects do
-          if objects[i].line == prec_pos.line and objects[i].column == prec_pos.column then
-            objects[i].id = objects[i].id+1
-            Level.current_level.nb_buttons_succed = Level.current_level.nb_buttons_succed-1
-            map.map_objects[prec_pos.line][prec_pos.column] = objects[i].id
-            objects[i].image = tile_set[objects[i].id].image
+          if objects[i].line == perso.line and objects[i].column == perso.column then
+            if (objects[i].id == 9 or objects[i].id == 11) then
+              objects[i].id = objects[i].id-1
+              Level.current_level.nb_buttons_succed = Level.current_level.nb_buttons_succed+1
+              map.map_objects[perso.line][perso.column] = objects[i].id
+              objects[i].image = tile_set[objects[i].id].image
+            end
             break
+             
           end
         end
       end
-    end
-    if map.map_objects[perso.line][perso.column] == 9 or map.map_objects[perso.line][perso.column] == 11 then
-      for i = 1, #objects do
-        if objects[i].line == perso.line and objects[i].column == perso.column then
-          if (objects[i].id == 9 or objects[i].id == 11) then
-            objects[i].id = objects[i].id-1
-            Level.current_level.nb_buttons_succed = Level.current_level.nb_buttons_succed+1
-            map.map_objects[perso.line][perso.column] = objects[i].id
-            objects[i].image = tile_set[objects[i].id].image
-          end
-          break
-           
-        end
+      
+      if (Level.current_level.nb_buttons_succed == Level.current_level.nb_buttons) then
+        Level.current_level.gate.image = Level.current_level.gate.images.open
+      else
+        Level.current_level.gate.image = Level.current_level.gate.images.close
       end
     end
     
-    if (Level.current_level.nb_buttons_succed == Level.current_level.nb_buttons) then
-      Level.current_level.gate.image = Level.current_level.gate.images.open
-    else
-      Level.current_level.gate.image = Level.current_level.gate.images.close
+    if (Level.current_level.nb_buttons_succed == Level.current_level.nb_buttons and 
+        (perso.line == Level.current_level.gate.line and perso.column == Level.current_level.gate.column)
+      ) then
+      
+      lunar_mode = true
     end
-  end
-  
-  if (Level.current_level.nb_buttons_succed == Level.current_level.nb_buttons and 
-      (perso.line == Level.current_level.gate.line and perso.column == Level.current_level.gate.column)
-    ) then
     
-    lunar_mode = true
-  end
-  
-  for i = 1, #objects do
-    if (not objects[i].falled) then
-      if ((objects[i].id == 6 or objects[i].id == 7) and map.map_set[objects[i].line][objects[i].column] == 5) then
-        map.map_objects[objects[i].line][objects[i].column] = 0
-        objects[i].fall()
-        for j = 1, #tiles_ground do
-          if tiles_ground[j].line == objects[i].line and tiles_ground[j].column == objects[i].column then
-            tiles_ground[j].object_falled = true
-            break
+    for i = 1, #objects do
+      if (not objects[i].falled) then
+        if ((objects[i].id == 6 or objects[i].id == 7) and map.map_set[objects[i].line][objects[i].column] == 5) then
+          map.map_objects[objects[i].line][objects[i].column] = 0
+          objects[i].fall()
+          for j = 1, #tiles_ground do
+            if tiles_ground[j].line == objects[i].line and tiles_ground[j].column == objects[i].column then
+              tiles_ground[j].object_falled = true
+              break
+            end
           end
         end
       end
     end
-  end
 
   end  -- end level select
 end --end keypressed
