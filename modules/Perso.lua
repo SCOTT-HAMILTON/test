@@ -31,10 +31,17 @@ _Perso.newPerso = function(map_start, pLine, pColumn, pPathImages, p_Tile, pos_s
   
   _perso.moving = false
   _perso.ease = {start = {x = 0, y = 0}, start_time = 0, time = 0, offset = {x = 0, y = 0}, duration = 50, fct = persoMovesEase}
+<<<<<<< HEAD
   
   _perso.map_start = map_start
   _perso.z = _perso.map_start.y-_perso.pos.y  
   
+=======
+  
+  _perso.map_start = map_start
+  _perso.z = _perso.map_start.y-_perso.pos.y  
+  
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
   _perso.falled = false
   
   _perso.update = function(dt)
@@ -90,15 +97,19 @@ _Perso.newPerso = function(map_start, pLine, pColumn, pPathImages, p_Tile, pos_s
       
   end
   
-  _perso.up = function(pMapObjects, pObjects, pLvl) 
+  _perso.up = function(p_Map, pObjects, pLvl) 
     can = true
     push_case = false
     
+<<<<<<< HEAD
+    if (p_Map.map_objects[_perso.line+1][_perso.column] == 6 or p_Map.map_objects[_perso.line+1][_perso.column] == 7) then
+=======
     if (pMapObjects[_perso.line+1][_perso.column] == 6 or pMapObjects[_perso.line+1][_perso.column] == 7) then
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
       push_case = true
       if _perso.line+2>_Perso.map.nb_tile_height then
         can = false
-      elseif (pMapObjects[_perso.line+2][_perso.column] == 6 or pMapObjects[_perso.line+2][_perso.column] == 7) then
+      elseif (p_Map.map_objects[_perso.line+2][_perso.column] == 6 or p_Map.map_objects[_perso.line+2][_perso.column] == 7) then
         can = false
       end
     end
@@ -111,19 +122,19 @@ _Perso.newPerso = function(map_start, pLine, pColumn, pPathImages, p_Tile, pos_s
        
       if push_case then
         local pos_case = {line = _perso.line+1, column = _perso.column}
-        _perso.push_case(pos_case, pMapObjects, pObjects, pLvl)
+        _perso.push_case(pos_case, p_Map, pObjects, pLvl)
       end
     end
   end
   
-  _perso.down = function(pMapObjects, pObjects, pLvl) 
+  _perso.down = function(p_Map, pObjects, pLvl) 
     can = true
     push_case = false
-    if (pMapObjects[_perso.line-1][_perso.column] == 6 or pMapObjects[_perso.line-1][_perso.column] == 7) then
+    if (p_Map.map_objects[_perso.line-1][_perso.column] == 6 or p_Map.map_objects[_perso.line-1][_perso.column] == 7) then
       push_case = true
       if _perso.line-2<1 then
         can = false
-      elseif (pMapObjects[_perso.line-2][_perso.column] == 6 or pMapObjects[_perso.line-2][_perso.column] == 7) then
+      elseif (p_Map.map_objects[_perso.line-2][_perso.column] == 6 or p_Map.map_objects[_perso.line-2][_perso.column] == 7) then
         can = false
       end
     end
@@ -136,19 +147,19 @@ _Perso.newPerso = function(map_start, pLine, pColumn, pPathImages, p_Tile, pos_s
       
       if push_case then
         local pos_case = {line = _perso.line-1, column = _perso.column}
-        _perso.push_case(pos_case, pMapObjects, pObjects, pLvl)
+        _perso.push_case(pos_case, p_Map, pObjects, pLvl)
       end
     end
   end
   
-  _perso.right = function(pMapObjects, pObjects, pLvl) 
+  _perso.right = function(p_Map, pObjects, pLvl) 
     can = true
     push_case = false
-    if (pMapObjects[_perso.line][_perso.column-1] == 6 or pMapObjects[_perso.line][_perso.column-1] == 7) then
+    if (p_Map.map_objects[_perso.line][_perso.column-1] == 6 or p_Map.map_objects[_perso.line][_perso.column-1] == 7) then
       push_case = true
       if _perso.column-2<1 then
         can = false
-      elseif (pMapObjects[_perso.line][_perso.column-2] == 6 or pMapObjects[_perso.line][_perso.column-2] == 7) then
+      elseif (p_Map.map_objects[_perso.line][_perso.column-2] == 6 or p_Map.map_objects[_perso.line][_perso.column-2] == 7) then
         can = false
       end
     end
@@ -161,19 +172,20 @@ _Perso.newPerso = function(map_start, pLine, pColumn, pPathImages, p_Tile, pos_s
       
       if push_case then
         local pos_case = {line = _perso.line, column = _perso.column-1}
-        _perso.push_case(pos_case, pMapObjects, pObjects, pLvl)
+        _perso.push_case(pos_case, p_Map, pObjects, pLvl)
       end
     end
   end
   
-  _perso.left = function(pMapObjects, pObjects, pLvl)
+  _perso.left = function(p_Map, pObjects, pLvl)
     can = true
     push_case = false
-    if (pMapObjects[_perso.line][_perso.column+1] == 6 or pMapObjects[_perso.line][_perso.column+1] == 7) then
+    print("pMap.objects : "..p_Map.map_objects[_perso.line][_perso.column+1])
+    if (p_Map.map_objects[_perso.line][_perso.column+1] == 6 or p_Map.map_objects[_perso.line][_perso.column+1] == 7) then
       push_case = true
       if _perso.column+2>_Perso.map.nb_tile_width then
         can = false
-      elseif (pMapObjects[_perso.line][_perso.column+2] == 6 or pMapObjects[_perso.line][_perso.column+2] == 7) then
+      elseif (p_Map.map_objects[_perso.line][_perso.column+2] == 6 or p_Map.map_objects[_perso.line][_perso.column+2] == 7) then
         can = false
       end
     end
@@ -186,13 +198,16 @@ _Perso.newPerso = function(map_start, pLine, pColumn, pPathImages, p_Tile, pos_s
       
       if push_case then
         local pos_case = {line = _perso.line, column = _perso.column+1}
-        _perso.push_case(pos_case, pMapObjects, pObjects, pLvl)
+        _perso.push_case(pos_case, p_Map, pObjects, pLvl)
       end
     end
   end
   
-  _perso.push_case = function (pos_case, pMapObjects, pObjects, pLvl) 
+  _perso.push_case = function (pos_case, p_Map, pObjects, pLvl) 
     local size = #pObjects
+    if (p_Map.map_objects[_perso.line][_perso.column] ~= 6 and p_Map.map_objects[_perso.line][_perso.column] ~= 7) then
+      return false
+    end
     for i = 1, size do
       if (pObjects[i].line == _perso.line and pObjects[i].column == _perso.column and (pObjects[i].id == 6 or pObjects[i].id == 7)) then
         if (pObjects[i].under ~= nil) then
@@ -203,10 +218,10 @@ _Perso.newPerso = function(map_start, pLine, pColumn, pPathImages, p_Tile, pos_s
           end
           pObjects[i].under.isunder = false
           pObjects[#pObjects+1] = pObjects[i].under
-          pMapObjects[_perso.line][_perso.column] = pObjects[i].under.id
+          p_Map.map_objects[_perso.line][_perso.column] = pObjects[i].under.id
           pObjects[i].under = nil
         end
-        if (pMapObjects[pos_case.line][pos_case.column] ~= 0) then
+        if (p_Map.map_objects[pos_case.line][pos_case.column] ~= 0) then
           for j = 1, #pObjects do
             if pObjects[j] == nil then break end
             if (pObjects[j].line == pos_case.line and pObjects[j].column == pos_case.column) then
@@ -236,12 +251,21 @@ _Perso.newPerso = function(map_start, pLine, pColumn, pPathImages, p_Tile, pos_s
         local tmp_posgoal = _Perso.TabPos2Pos(pObjects[i].line, pObjects[i].column, pObjects[i].width, pObjects[i].height, _perso.pos_start)
         tmp_posgoal.x = tmp_posgoal.x-pObjects[i].width/2
         tmp_posgoal.y = tmp_posgoal.y-pObjects[i].height/2
-        if (pMapObjects[pos_case.line][pos_case.column] == 9 and pObjects[i].id == 6) then
+        if (p_Map.map_objects[pos_case.line][pos_case.column] == 9 and pObjects[i].id == 6) then
           tmp_posgoal.y = tmp_posgoal.y-15
         end
+        
+        if (p_Map.map_set[pos_case.line][pos_case.column] == 3 and pObjects[i].id == 6) then
+          pObjects[i].image = p_Map.tile_set[12].image
+          p_Map.map_objects[pos_case.line][pos_case.column] = 0
+        elseif (p_Map.map_set[pos_case.line][pos_case.column] == 3 and pObjects[i].id == 7) then
+          pObjects[i].image = p_Map.tile_set[13].image
+          p_Map.map_objects[pos_case.line][pos_case.column] = 0
+        else
+          p_Map.map_objects[pos_case.line][pos_case.column] = pObjects[i].id
+        end
         pObjects[i].setMoving(tmp_posgoal)
-        pMapObjects[pos_case.line][pos_case.column] = pObjects[i].id
-        if (pMapObjects[_perso.line][_perso.column] == pObjects[i].id)then pMapObjects[_perso.line][_perso.column] = 0 end
+        if (p_Map.map_objects[_perso.line][_perso.column] == pObjects[i].id)then p_Map.map_objects[_perso.line][_perso.column] = 0 end
         break
       end
     end
@@ -289,4 +313,8 @@ function persoFallEase(t, b, c, d)
 	return c*t*t*t + b;
 end
 
+<<<<<<< HEAD
 return _Perso
+=======
+return _Perso
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0

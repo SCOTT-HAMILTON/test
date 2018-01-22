@@ -54,7 +54,11 @@ currentScene = "TITLESCREEN" -- permet de changer la scene
 
 
 function love.load()
+<<<<<<< HEAD
   Font = love.graphics.newFont("images/font/Pixeled.ttf", 18)
+=======
+  Font = love.graphics.newFont("images/font/pixeled.ttf", 18)
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
   width = love.graphics.getWidth()
   height = love.graphics.getHeight()
   
@@ -70,7 +74,11 @@ end
 ------------------------------------------------------
 
 function love.update(dt)
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
 	if currentScene == "MAINGAME" then
  
     lunar:update(dt)
@@ -122,6 +130,38 @@ function love.draw()
   elseif currentScene == "MAINGAME" then
 	  drawinrect(backgroundColor, 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
   
+<<<<<<< HEAD
+  love.graphics.push()
+  
+  love.graphics.translate(-camera.pos.x, -camera.pos.y)
+  
+  for i = 1, #draw_list do
+    if (draw_list[i].name == nil) then
+      love.graphics.draw(draw_list[i].image, draw_list[i].pos.x-draw_list[i].image:getWidth(), draw_list[i].pos.y-draw_list[i].image:getHeight()-Tile.tile_height*2, 0 , Tile.scale.x, Tile.scale.y)
+    elseif (draw_list[i].name == "perso")then
+      
+      if (perso.scale_sign == 1) then 
+      
+      love.graphics.draw(draw_list[i].image, draw_list[i].pos.x, draw_list[i].pos.y, 0, Tile.scale.x, Tile.scale.y)
+      else 
+        love.graphics.draw(draw_list[i].image, draw_list[i].pos.x, draw_list[i].pos.y, 0, -Tile.scale.x, Tile.scale.y, draw_list[i].image:getWidth())
+      end
+    else
+      love.graphics.draw(draw_list[i].image, draw_list[i].pos.x+draw_list[i].offset.x, draw_list[i].pos.y+draw_list[i].offset.y+draw_list[i].vec_high, 0, Tile.scale.x, Tile.scale.y)
+    end
+  end
+  love.graphics.pop()
+  
+  if (lunar_mode) then
+    love.graphics.draw(lunar_ship.image, lunar_ship.pos.x, lunar_ship.pos.y, math.rad(lunar_ship.r), Tile.scale.x, Tile.scale.y, lunar_ship.image:getWidth(), lunar_ship.image:getHeight()/2)
+    if (lunar_ship.fire_on) then
+      love.graphics.draw(lunar_ship.fire, lunar_ship.pos.x, lunar_ship.pos.y, math.rad(lunar_ship.r), Tile.scale.x, Tile.scale.y, lunar_ship.fire:getWidth()-5, lunar_ship.fire:getHeight()/2)
+    end
+  end
+end
+
+  
+=======
       love.graphics.push()
       
       love.graphics.translate(-camera.pos.x, -camera.pos.y)
@@ -153,6 +193,7 @@ function love.draw()
     end
 
     
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
   
 end
 
@@ -169,6 +210,53 @@ function love.keypressed(key)
   elseif currentScene == "LEVELSELECT" then
     levelSelect:controller(key)
 	elseif currentScene == "MAINGAME" then  -- IN GAME CONTROLL
+<<<<<<< HEAD
+    
+  if (perso.falled) then
+    print("falled")
+    return false
+  end
+  print("not falled")
+  
+  local box_moving = false
+  for i = 1, #objects do
+    if ((objects[i].id == 6 or objects[i].id == 7) and objects[i].moving and not objects[i].falled) then
+      box_moving = true
+    end
+  end 
+  
+  if (not perso.moving and not box_moving)then
+    local under_button = false
+    local prec_pos = {line = perso.line, column = perso.column}
+    if map.map_objects[perso.line][perso.column] == 8 or map.map_objects[perso.line][perso.column] == 10 then
+      under_button = true
+    end
+    
+    if key == "up" then
+      local wanted_nextpos = {line = perso.line+1, column = perso.column}
+      move_perso(wanted_nextpos, perso.up)
+    elseif key == "down" then
+      local wanted_nextpos = {line = perso.line-1, column = perso.column}
+      print("wanted_next c : ")
+      move_perso(wanted_nextpos, perso.down)
+    elseif key == "right" then
+      local wanted_nextpos = {line = perso.line, column = perso.column-1}
+      move_perso(wanted_nextpos, perso.right)
+    elseif key == "left" then
+      local wanted_nextpos = {line = perso.line, column = perso.column+1}
+      move_perso(wanted_nextpos, perso.left)
+    end
+    
+    if (perso.falled) then
+      print("falled")
+      return false
+    end
+    
+    if (lunar_mode)then return false end
+    
+    if prec_pos.line ~= perso.line or prec_pos.column ~= perso.column then
+      if under_button then
+=======
 
     if (perso.falled) then
       print("falled")
@@ -226,6 +314,7 @@ function love.keypressed(key)
         end
       end
       if map.map_objects[perso.line][perso.column] == 9 or map.map_objects[perso.line][perso.column] == 11 then
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
         for i = 1, #objects do
           if objects[i].line == perso.line and objects[i].column == perso.column then
             if (objects[i].id == 9 or objects[i].id == 11) then
@@ -239,11 +328,27 @@ function love.keypressed(key)
           end
         end
       end
+<<<<<<< HEAD
+    end
+    if map.map_objects[perso.line][perso.column] == 9 or map.map_objects[perso.line][perso.column] == 11 then
+      for i = 1, #objects do
+        if objects[i].line == perso.line and objects[i].column == perso.column then
+          if (objects[i].id == 9 or objects[i].id == 11) then
+            objects[i].id = objects[i].id-1
+            Level.current_level.nb_buttons_succed = Level.current_level.nb_buttons_succed+1
+            map.map_objects[perso.line][perso.column] = objects[i].id
+            objects[i].image = tile_set[objects[i].id].image
+          end
+          break
+           
+        end
+=======
       
       if (Level.current_level.nb_buttons_succed == Level.current_level.nb_buttons) then
         Level.current_level.gate.image = Level.current_level.gate.images.open
       else
         Level.current_level.gate.image = Level.current_level.gate.images.close
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
       end
     end
     
@@ -254,6 +359,20 @@ function love.keypressed(key)
       lunar_mode = true
     end
     
+<<<<<<< HEAD
+    lunar_mode = true
+  end
+  
+  for i = 1, #objects do
+    if (not objects[i].falled) then
+      if ((objects[i].id == 6 or objects[i].id == 7) and map.map_set[objects[i].line][objects[i].column] == 5) then
+        map.map_objects[objects[i].line][objects[i].column] = 0
+        objects[i].fall()
+        for j = 1, #tiles_ground do
+          if tiles_ground[j].line == objects[i].line and tiles_ground[j].column == objects[i].column then
+            tiles_ground[j].object_falled = true
+            break
+=======
     for i = 1, #objects do
       if (not objects[i].falled) then
         if ((objects[i].id == 6 or objects[i].id == 7) and map.map_set[objects[i].line][objects[i].column] == 5) then
@@ -264,6 +383,7 @@ function love.keypressed(key)
               tiles_ground[j].object_falled = true
               break
             end
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
           end
         end
       end
@@ -335,16 +455,23 @@ function loadLevel()
   
   Level.current_level.gate.image = Level.current_level.gate.images.close
   Level.current_level.nb_buttons_succed = 0
+<<<<<<< HEAD
+=======
   
   map = Map.newMap(Level.current_level.set, Level.current_level.objects, tile_set)
   
   Perso.map = map
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
     
   local scale_x = 4
   local scale_y = scale_x
   
   Tile.init(tile_set, Tile)  -- chargement de toutes les images  
   Tile.setScale(scale_x, scale_y)
+  
+  map = Map.newMap(Level.current_level.set, Level.current_level.objects, tile_set)
+  
+  Perso.map = map
   
   for i = 1, map.nb_tile_height do
     for j = 1, map.nb_tile_width do
@@ -362,6 +489,7 @@ function loadLevel()
   map_start.y = map.pos_start.y+(Tile.tile_height*Tile.scale.y)
   
   map.pos_start = map_start
+<<<<<<< HEAD
   
   for i = 1, #tiles_ground do
     tiles_ground[i].update(map_start)
@@ -369,6 +497,15 @@ function loadLevel()
   
   
   
+=======
+  
+  for i = 1, #tiles_ground do
+    tiles_ground[i].update(map_start)
+  end
+  
+  
+  
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
   perso = Perso.newPerso(map_start, Level.current_level.pStart.line, Level.current_level.pStart.column, {up = "images/hero/hero_frontr.png", down ="images/hero/hero_backr.png"}, Tile, map.pos_start)
 
   
@@ -437,7 +574,22 @@ function updateDrawList()
             return base
           end
           return true
-        elseif (a.falled) then
+        end
+        if (b.object_falled) then
+          if (a.id<=5) then
+            return base
+          end
+          return false
+        end
+        if(a.floating) then
+          if (b.id == 3)then return false end
+          return base
+        end
+        if (b.floating) then
+          if (a.id == 3)then return true end
+          return base
+        end
+        if (a.falled) then
           if (b.object_falled) then
             return false
           end
@@ -501,7 +653,12 @@ function move_perso(wanted_nextpos, fctMove)
   
  if (CanPass) then
     glass_under = map.map_set[wanted_nextpos.line][wanted_nextpos.column] == 4
+<<<<<<< HEAD
+    print("map tile 12 "..type(map.tile_set[1]))
+    fctMove(map, objects, Level.current_level)
+=======
     fctMove(map.map_objects, objects, Level.current_level)
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
     
     CanPass = canPass({line = wanted_nextpos.line, column = wanted_nextpos.column})
     if (CanPass) then
@@ -512,7 +669,11 @@ function move_perso(wanted_nextpos, fctMove)
     
     while (CanPass and glass_under) do
       if (map.map_set[wanted_nextpos.line][wanted_nextpos.column] == 4) then
+<<<<<<< HEAD
+        fctMove(map, objects, Level.current_level)
+=======
         fctMove(map.map_objects, objects, Level.current_level)
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
         once_moved = true
       end
       CanPass = canPass({line = wanted_nextpos.line, column = wanted_nextpos.column})
@@ -523,7 +684,11 @@ function move_perso(wanted_nextpos, fctMove)
       end
       if CanPass then
         if (map.map_set[wanted_nextpos.line][wanted_nextpos.column] ~= 4) then
+<<<<<<< HEAD
+          fctMove(map, objects, Level.current_level)
+=======
           fctMove(map.map_objects, objects, Level.current_level)
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
           CanPass = false
           break
         end

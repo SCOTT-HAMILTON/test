@@ -40,6 +40,10 @@ _Tile.newTile = function(pLine, pColumn, pPos, pTile_base_pattern)
   
   _tile.z = 0
   
+<<<<<<< HEAD
+  _tile.floating = false
+=======
+>>>>>>> 1ae5bc7b333d44400b452b3298720bb5aa533dc0
   
   _tile.falled = false
   
@@ -208,10 +212,12 @@ _Tile.init = function(table, tile)
 				"images/button_stone_on.png",
 				"images/button_stone_off.png",
 				"images/button_wood_on.png",
-				"images/button_wood_off.png"
+				"images/button_wood_off.png",
+        "images/box_wood_floating.png",
+        "images/box_stone_floating.png"
 			}
 	for i=1, #images do -- chargement des images
-		table[i] = tile.newTileBase( images[i], i)
+		table[i] = _Tile.newTileBase( images[i], i)
 	end
 	
 	
