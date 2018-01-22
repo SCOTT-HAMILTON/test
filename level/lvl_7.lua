@@ -16,19 +16,19 @@ button wood off   -- 11 ]]
 
 
 lvl.set = {
-  {1, 1, 1},
-  {1, 1, 1},
-  {1, 1, 1},
-  {1, 1, 1},
-  {1, 1, 1}
+  {1, 1, 1, 1, 1, 1},
+  {1, 1, 1, 1, 1, 1},
+  {1, 1, 1, 1, 5, 1},
+  {1, 1, 1, 1, 1, 1},
+  {1, 1, 1, 1, 1, 1}
 }
 
 lvl.objects = {
-  { 0, 0, 0},
-  { 6, 0, 0},
-  {11, 0, 0},
-  { 0, 0, 0},
-  { 0, 0, 0}   
+  {11, 0, 0, 0, 0,11},
+  { 0, 0, 0, 0, 6, 0},
+  { 0, 0, 6, 6, 0, 0},
+  { 0, 0, 0, 0, 6, 0},
+  {11, 0, 0, 0, 0,11}
 }
 
 lvl.pStart = {line = 1, column = 1}
@@ -36,8 +36,8 @@ lvl.pStart = {line = 1, column = 1}
 lvl.move = {gold = 10, silver = 15, wood = 25 }
 
 lvl.gate = {}
-lvl.gate.line = 4
-lvl.gate.column = 2
+lvl.gate.line = 5
+lvl.gate.column = 3
 
 lvl.gate.pos = {x = 0, y = 0}
 

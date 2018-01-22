@@ -1,35 +1,39 @@
---SANDBOX
 local lvl = {}
 
+--[[    TILES & OBJECT NUMBER   
+
+grass             -- 1
+stone             -- 2
+water             -- 3
+ice               -- 4
+hole              -- 5
+box wood          -- 6
+box stone         -- 7
+button stone on   -- 8
+button stone off  -- 9
+button wood on    -- 10
+button wood off   -- 11 ]]
+				
+				
 lvl.set = {
-  {1, 3, 3, 1, 1, 2, 3, 4},
-  {2, 3, 3, 1, 1, 2, 3, 4},
-  {3, 3, 4, 1, 1, 2, 3, 4},
-  {4, 2, 1, 1, 1, 2, 3, 4},
-  {4, 2, 2, 1, 1, 2, 3, 4},
-  {4, 2, 2, 1, 1, 2, 3, 4},
-  {4, 2, 2, 1, 1, 2, 3, 4},
-  {4, 2, 2, 1, 1, 2, 3, 4}
+  {1, 1, 1},
+  {1, 1, 1},
+  {1, 1, 1}
 }
 
 lvl.objects = {
-  {0, 0, 0, 0, 0, 0, 0, 0},
-  {0, 0, 0, 0, 0, 0, 0, 0},
-  {0, 0, 6, 11, 0, 0, 0, 0},
-  {0, 0, 9, 0, 0, 0, 0, 0},
-  {0, 0, 0, 0, 0, 0, 0, 0},
-  {0, 0, 0, 0, 0, 0, 0, 0},
-  {0, 0, 0, 7, 0, 0, 0, 0},
-  {0, 0, 0, 0, 0, 0, 0, 0}
+  {0, 0, 0},
+  {0, 0, 0},
+  {0, 0, 0},
 }
 
-lvl.pStart = {line = 5, column = 5}
+lvl.pStart = {line = 1, column = 1}
 
 lvl.move = {gold = 10, silver = 15, wood = 25 }
 
 lvl.gate = {}
 lvl.gate.line = 2
-lvl.gate.column = 3
+lvl.gate.column = 2
 
 lvl.gate.pos = {x = 0, y = 0}
 

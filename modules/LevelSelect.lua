@@ -1,14 +1,8 @@
 _levelSelect = {}
 
-local pow = math.pow
-
-local function outExpo(t, b, c, d)
-    if t == d then
-      return b + c
-    else
-      return c * 1.001 * (-pow(2, -10 * t / d) + 1) + b
-    end
-end
+bg_image = love.graphics.newImage( "images/ui/lvlselect/bg_card.png" )
+cardImg = love.graphics.newImage( "images/ui/lvlselect/card.png" )
+starImg = love.graphics.newImage( "images/ui/lvlselect/starsEndLevel.png" )
 
 local moveX = 0
 local moveY = 0
@@ -16,7 +10,6 @@ local rOn = false
 local lOn = false
 local speedMoveMenu = 20
 local tempsLevel = 50
-local iLevel = math.floor(tempsLevel / 15)
 
 local _bg = {
     width = 500,
@@ -48,6 +41,7 @@ local selector = {
 
 local dir = "/level"
 _levelSelect.lvlFiles = love.filesystem.getDirectoryItems(dir)
+local iLevel = math.floor(#_levelSelect.lvlFiles / 15) + 1
 
 function  _levelSelect:load()
     _bg.x = love.graphics.getWidth()/2 - _bg.width/2
@@ -65,14 +59,15 @@ function _levelSelect:draw()
     posXn = 1
     posYn = 1
 
-    --selector
+    --selector var
     selector.x = (100 * selector.posX) - 82
     selector.y = (100 * selector.posY) - 82
     love.graphics.setColor(0,255, 255, 255)
     love.graphics.rectangle("fill", _bg.x + selector.x , _bg.y + selector.y,  _level.width + 5,_level.height+5, 10,10,30)
     love.graphics.setColor(255,255, 255, 255)
     
-    for i = 1, #_levelSelect.lvlFiles do -- draw card
+    -- draw card
+    for i = 1, #_levelSelect.lvlFiles - 1 do 
         
             local posX = (100 * posXn) - 80
             local posY = (100 * posYn) - 80 
@@ -86,8 +81,9 @@ function _levelSelect:draw()
             if i <  (#_levelSelect.lvlFiles + 1 - (selector.bgPos * 15 - 15))  then
                 if i < 16 then
             --card level item
-                love.graphics.setColor(_level.color)
-                love.graphics.rectangle("fill", _bg.x + posX, _bg.y + posY, _level.width,_level.height, 10,10,30)
+                love.graphics.setColor(255,255,255,255)
+                love.graphics.draw(cardImg, _bg.x + posX,  _bg.y + posY,0, 1, 1)
+                --love.graphics.rectangle("fill", _bg.x + posX, _bg.y + posY, _level.width,_level.height, 10,10,30)
                 love.graphics.setColor(255,0,0,255)
                 love.graphics.print(i + selector.bgPos * 15 - 15, _bg.x + posX,  _bg.y + posY,0,1.5,1.5,-15,5)
                 love.graphics.setColor(0,0,0,0) -- reset bg color
@@ -95,6 +91,7 @@ function _levelSelect:draw()
             end
     end
 
+    --selector pos
     for i=1 , iLevel do
         if selector.bgPos == i then
         love.graphics.setColor(255,0,0,255)
@@ -117,7 +114,6 @@ end
 function _levelSelect:controller(key)
     
     --selector move
-
     if key == "right" and selector.val < #_levelSelect.lvlFiles then
         if selector.posX < 5 or selector.posY < 3 then
             selector.posX = selector.posX + 1
@@ -139,23 +135,34 @@ function _levelSelect:controller(key)
     if key == "up" and selector.posY > 1 then
         selector.posY = selector.posY - 1
     end
-    if key == "down" and selector.posY < 3 then
+    if key == "down" and selector.posY < 3  and selector.val + 5 < #_levelSelect.lvlFiles - 1 then
         selector.posY = selector.posY + 1
     end
 
-    selector.val = selector.posX + (  selector.posY * 5 - 5 ) + (selector.bgPos * 1 - 1)
+    -- level select
+    if key == "space" then
+        Level.current_level = Level.levels[selector.val]
+        loadLevel()
+        currentScene = "MAINGAME"
+    else
+
+    end
+
     --selector auto next card
     
 
     --level select move
-    if love.keyboard.isDown( 'lshift' ) and love.keyboard.isDown( 'right' ) and lOn == false then
+    if love.keyboard.isDown( 'lshift' ) and love.keyboard.isDown( 'right' ) and lOn == false and selector.bgPos < iLevel then
         rOn = true
         selector.bgPos = selector.bgPos + 1
     end
-    if love.keyboard.isDown( 'lshift' ) and love.keyboard.isDown( 'left' ) and  rOn == false then
+    if love.keyboard.isDown( 'lshift' ) and love.keyboard.isDown( 'left' ) and  rOn == false and selector.bgPos > 1 then
         lOn = true
         selector.bgPos = selector.bgPos - 1
     end
+
+    selector.val = selector.posX + (  selector.posY * 5 - 5 ) + (selector.bgPos * 15 - 15)
+    
 end
 
 function chooseLevel()
@@ -165,7 +172,8 @@ end
 function creatCardBg()
     love.graphics.setColor(255,255,255,255)
     for i=1, iLevel do
-        love.graphics.rectangle("fill", _bg.x  + moveX + (i*800) - 800, _bg.y , _bg.width , _bg.height ,0,0,0)
+        love.graphics.draw(bg_image, _bg.x  + moveX + (i*800) - 800, _bg.y  )
+        --love.graphics.rectangle("fill", _bg.x  + moveX + (i*800) - 800, _bg.y , _bg.width , _bg.height ,0,0,0)
     end
 end
 

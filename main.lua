@@ -38,6 +38,8 @@ draw_list = {}
 
 map_start = {x = 0, y = 0}
 
+
+
 backgroundColor = gradient {   -- degradé de couleur pour l'arrière plan
     direction = 'horizontal';
 	{203, 219, 215};
@@ -150,6 +152,7 @@ function love.draw()
       end
     end
 
+    
   
 end
 

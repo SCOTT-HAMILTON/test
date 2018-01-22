@@ -46,7 +46,7 @@ function _mainMenu:controller(key)
 	
 	if key == "space" then
 		if _mainMenu.showMenu[_mainMenu.menuSelect] == "Start" then
-			currentScene = "MAINGAME"
+			currentScene = "LEVELSELECT"
 		elseif _mainMenu.showMenu[_mainMenu.menuSelect] == "Option" then
 			_mainMenu.showMenu = menu[_mainMenu.showMenu[_mainMenu.menuSelect]]
 		elseif _mainMenu.showMenu[_mainMenu.menuSelect] == "Back" then

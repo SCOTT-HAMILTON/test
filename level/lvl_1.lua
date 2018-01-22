@@ -12,7 +12,9 @@ box stone         -- 7
 button stone on   -- 8
 button stone off  -- 9
 button wood on    -- 10
-button wood off   -- 11 ]]
+button wood off   -- 11 
+box wood floating -- 12
+]]
 				
 				
 lvl.set = {
@@ -22,7 +24,7 @@ lvl.set = {
 }
 
 lvl.objects = {
-  {0, 0, 0},
+  {0, 6, 11},
   {0, 0, 0},
   {0, 0, 0},
 }
